@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fungsi Keanggotaan Traffic CCTV Pasteur Bandung</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Fungsi Keanggotaan Traffic CCTV Pasteur</h1>
+            <p>Sistem Fuzzy Logic untuk Klasifikasi Kepadatan Lalu Lintas Kota Bandung</p>
+        </div>
+        
+        <div class="content">
+            <div class="chart-container">
+                <canvas id="membershipChart"></canvas>
+            </div>
+            
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #27ae60;"></div>
+                    <span>Lancar</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #f39c12;"></div>
+                    <span>Padat</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #e74c3c;"></div>
+                    <span>Macet</span>
+                </div>
+            </div>
+            
+            <div class="parameters">
+                <div class="param-card lancar">
+                    <div class="param-title">🟢 LANCAR</div>
+                    <div class="param-details">
+                        <strong>Rentang:</strong> 0 - 50 kendaraan/menit<br>
+                        <strong>Fungsi:</strong> Linear Turun (Descending)<br>
+                        <strong>Karakteristik:</strong> Lalu lintas sangat lancar, kendaraan dapat bergerak dengan bebas
+                        <div class="function-formula">
+                            μ_lancar(x) = {<br>
+                            &nbsp;&nbsp;1, jika x ≤ 20<br>
+                            &nbsp;&nbsp;(50-x)/(50-20), jika 20 < x ≤ 50<br>
+                            &nbsp;&nbsp;0, jika x > 50<br>
+                            }
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="param-card padat">
+                    <div class="param-title">🟡 PADAT</div>
+                    <div class="param-details">
+                        <strong>Rentang:</strong> 30 - 80 kendaraan/menit<br>
+                        <strong>Fungsi:</strong> Segitiga (Triangular)<br>
+                        <strong>Karakteristik:</strong> Lalu lintas mulai padat, kecepatan berkurang namun masih bergerak
+                        <div class="function-formula">
+                            μ_padat(x) = {<br>
+                            &nbsp;&nbsp;0, jika x ≤ 30 atau x ≥ 80<br>
+                            &nbsp;&nbsp;(x-30)/(55-30), jika 30 < x ≤ 55<br>
+                            &nbsp;&nbsp;(80-x)/(80-55), jika 55 < x < 80<br>
+                            }
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="param-card macet">
+                    <div class="param-title">🔴 MACET</div>
+                    <div class="param-details">
+                        <strong>Rentang:</strong> 60 - 100+ kendaraan/menit<br>
+                        <strong>Fungsi:</strong> Linear Naik (Ascending)<br>
+                        <strong>Karakteristik:</strong> Lalu lintas macet total, kendaraan bergerak sangat lambat atau berhenti
+                        <div class="function-formula">
+                            μ_macet(x) = {<br>
+                            &nbsp;&nbsp;0, jika x ≤ 60<br>
+                            &nbsp;&nbsp;(x-60)/(90-60), jika 60 < x ≤ 90<br>
+                            &nbsp;&nbsp;1, jika x > 90<br>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="calculator">
+                <div class="calc-title">🧮 Kalkulator Derajat Keanggotaan</div>
+                <div class="calc-input">
+                    <input type="number" id="vehicleCount" placeholder="Jumlah kendaraan/menit" min="0" max="150">
+                    <button onclick="calculateMembership()">Hitung Derajat Keanggotaan</button>
+                </div>
+                <div id="calcResult" class="calc-result"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
